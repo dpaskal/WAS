@@ -1,2 +1,3 @@
-# WAS
-7. Weighted activity selection problem: implement an algorithm using dynamic programming.
+# CS 375 Group Project
+
+Weighted activity selection problem: implement an algorithm using dynamic programming.
