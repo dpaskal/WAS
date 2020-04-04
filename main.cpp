@@ -50,13 +50,13 @@ int weightedActivitySelection(vector<activity> S) {
     table[0] = S.at(0).weight;
 
     for(int i=1; i < size; i++) {
-        int weightSoFar = S.at(i).weight;
+        int currentWeight = S.at(i).weight;
         
         int l = lastNonConflict(S, 0, i, S.at(i).start_time);
         if(l != -1)
-            weightSoFar += table[l];
+            currentWeight += table[l];
 
-        table[i] = max(weightSoFar, table[i-1]);     // dynamic programming part
+        table[i] = max(currentWeight, table[i-1]);     // dynamic programming part
     }
 
     int result = table[size-1];
