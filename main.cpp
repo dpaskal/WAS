@@ -46,17 +46,17 @@ int weightedActivitySelection(vector<activity> S) {
     }
     sort(S.begin(), S.end(), comparator);       // first sort by finish time
     
-    int *table = new int[size];             // array for storing solutions of subproblems
+    int *table = new int[size];                  // array for storing solutions of subproblems
     table[0] = S.at(0).weight;
 
     for(int i=1; i < size; i++) {
-        int weight = S.at(i).weight;
+        int weightSoFar = S.at(i).weight;
         
         int l = lastNonConflict(S, 0, i, S.at(i).start_time);
         if(l != -1)
-            weight += table[l];
+            weightSoFar += table[l];
 
-        table[i] = max(weight, table[i-1]);
+        table[i] = max(weightSoFar, table[i-1]);     // dynamic programming part
     }
 
     int result = table[size-1];
