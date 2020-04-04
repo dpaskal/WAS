@@ -67,8 +67,12 @@ int main() {
     auto start = high_resolution_clock::now();  // start timer
 
     vector<activity> S;                         // generate activities somehow
+    S.push_back(activity{0, 5, 10});
+    S.push_back(activity{2, 6, 20});
+    S.push_back(activity{5, 9, 11});
 
-    weightedActivitySelection(S);
+    int maxWeight = weightedActivitySelection(S);
+    cout << "Maximum weight possible is " << maxWeight << endl;
 
     auto end = high_resolution_clock::now();    // end timer
     double duration = duration_cast<nanoseconds>(end - start).count();
