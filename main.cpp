@@ -39,6 +39,10 @@ int lastNonConflict(vector<activity> S, int lo, int hi, int target) {
 }
 
 int weightedActivitySelection(vector<activity> S) {
+    if(S.size() == 0) {
+        cerr << "Zero activities available." << endl;
+        exit(1);
+    }
     int size = static_cast<int>(S.size());
     sort(S.begin(), S.end(), comparator);       // first sort by finish time
     
