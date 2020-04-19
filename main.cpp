@@ -38,6 +38,17 @@ int lastNonConflict(vector<activity> S, int lo, int hi, int target) {
     return lo;
 }
 
+// linear search through vector S
+// to find latest job that does not conflict 
+int slowLastNonConflict(vector<activity> S, int i) {
+    for(int j = i-1; j >= 0; j--) {
+        if(S.at(j).finish_time <= S.at(i).finish_time) {
+            return j;
+        }
+    }
+    return -1; // there is no non-conflicting activity
+}
+
 int weightedActivitySelection(vector<activity> S) {
     int size = static_cast<int>(S.size());
     if(size == 0) {
@@ -51,7 +62,7 @@ int weightedActivitySelection(vector<activity> S) {
 
     for(int i=1; i < size; i++) {
         int currentWeight = S.at(i).weight;
-        
+        // int l = slowLastNonConflict(S, i);
         int l = lastNonConflict(S, 0, i, S.at(i).start_time);
         if(l != -1)
             currentWeight += table[l];
@@ -63,7 +74,7 @@ int weightedActivitySelection(vector<activity> S) {
     return result;
 }
 
-int main() {
+int main(int argc, char **argv) {
     auto start = high_resolution_clock::now();  // start timer
 
     vector<activity> S;                         // generate activities somehow
