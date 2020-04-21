@@ -23,18 +23,18 @@ bool comparator(activity a1, activity a2) {
     return a1.finish_time < a2.finish_time;
 }
 
-int weightedActivitySelection(vector<activity> S){
-	int sum = 0;
+vector<activity> weightedActivitySelection(vector<activity> S){
+	vector<activity> returnVec;
 	sort(S.begin(), S.end(), comparator); //Sort the array by finish time
 	activity lastChosen = S[0];
-	sum += lastChosen.weight;
+	returnVec.push_back(lastChosen);
 	for(auto i = S.begin()+1; i < S.end(); i++){
 		if(i->start_time >= lastChosen.finish_time){
-			sum += i->weight;
+			returnVec.push_back(*i);
 			lastChosen = *i;
 		}
 	}
-	return sum;
+	return returnVec;
 }
 
 
@@ -46,8 +46,12 @@ int main() {
     S.push_back(activity{2, 6, 20});
     S.push_back(activity{5, 9, 11});
 
-    int maxWeight = weightedActivitySelection(S);
-    cout << "Maximum weight possible is " << maxWeight << endl;
+    cout << "{";
+    vector<activity> possibleActivities = weightedActivitySelection(S);
+    for(auto i = possibleActivities.begin(); i < possibleActivities.end()-1; i++){
+    	cout << i->weight << ", ";
+    }
+    cout << (possibleActivities.end()-1)->weight << "}" << endl;
 
     auto end = high_resolution_clock::now();    // end timer
     double duration = duration_cast<nanoseconds>(end - start).count();
@@ -63,10 +67,9 @@ int main() {
 	    	int start_time = std::rand() % 100 + 1;
 	    	int end_time = std::rand() % 100 + 1;
 	    	int weight = std::rand() % 100 + 1;
-	    	S.push_back(activity{start_time, end_time, weight});
-
-	   	    
+	    	S.push_back(activity{start_time, end_time, weight});  
 	   	 }
+
 	   	start = high_resolution_clock::now();
 	   	weightedActivitySelection(S);
 	   	end = high_resolution_clock::now();
