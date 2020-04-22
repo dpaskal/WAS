@@ -101,7 +101,7 @@ int main() {
 
 	    for(int j = 0; j < pow(10, i); j++){
 	    	int start_time = std::rand() % 100 + 1;
-	    	int end_time = std::rand() % 100 + 1;
+	    	int end_time = std::rand() % 100 + start_time;
 	    	int weight = std::rand() % 100 + 1;
 	    	S.push_back(activity{start_time, end_time, weight});
 
