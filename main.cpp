@@ -51,6 +51,28 @@ int slowLastNonConflict(vector<activity> S, int i) {
     return -1; // there is no non-conflicting activity
 }
 
+int optimalChoiceBrute(vector<activity> * S, int pos){
+	if(pos == -1){
+		return 0;
+	}
+	int nextJobPos = -1;
+	for(uint i = pos; i < S->size(); i--){
+		if(S->at(pos).start_time >= S->at(i).finish_time){
+			nextJobPos = i;
+			break;
+		}
+	}
+	return max(S->at(pos).weight + optimalChoiceBrute(S, nextJobPos), optimalChoiceBrute(S, pos-1)); 
+}
+
+int bruteForce(vector<activity> S){
+    sort(S.begin(), S.end(), comparator);       // first sort by finish time
+    int max = optimalChoiceBrute(&S, S.size()-1); //Start at the end of the possible jobs
+    return max;
+}
+
+
+
 int weightedActivitySelection(vector<activity> S) {
     int size = static_cast<int>(S.size());
     if(size == 0) {
@@ -66,8 +88,9 @@ int weightedActivitySelection(vector<activity> S) {
         int currentWeight = S.at(i).weight;
         // int l = slowLastNonConflict(S, i);
         int l = lastNonConflict(S, 0, i, S.at(i).start_time);
-        if(l != -1)
+        if(l != -1){
             currentWeight += table[l];
+        }
 
         table[i] = max(currentWeight, table[i-1]);     // dynamic programming part
     }
@@ -77,26 +100,45 @@ int weightedActivitySelection(vector<activity> S) {
 }
 
 int main() {
-    auto start = high_resolution_clock::now();  // start timer
-
     vector<activity> S;                         // generate activities somehow
-    S.push_back(activity{0, 5, 10});
-    S.push_back(activity{2, 6, 20});
-    S.push_back(activity{5, 9, 11});
+    S.push_back(activity{0, 3, 3});
+    S.push_back(activity{3, 4, 1});
+    S.push_back(activity{0, 5, 2});
+    S.push_back(activity{2, 4, 5});
+    S.push_back(activity{4, 5, 3});
+    S.push_back(activity{5, 7, 1});
+    S.push_back(activity{8, 10, 7});
+    S.push_back(activity{3, 9, 4});
 
-    int maxWeight = weightedActivitySelection(S);
+
+    auto start = high_resolution_clock::now();  // start timer
+	int maxWeight = weightedActivitySelection(S);
+    auto end = high_resolution_clock::now();    // end timer
+
     cout << "Maximum weight possible is " << maxWeight << endl;
 
-    auto end = high_resolution_clock::now();    // end timer
     double duration = duration_cast<nanoseconds>(end - start).count();
     duration *= 1e-9;
     cout << "running time: " << fixed << duration << setprecision(9) << endl;
+
+
+    //Running Brute Force
+    start = high_resolution_clock::now();  // start timer
+	maxWeight = bruteForce(S);
+    end = high_resolution_clock::now();    // end timer
+
+	cout << "Brute Force: Maximum weight possible is " << maxWeight << endl;
+
+    duration = duration_cast<nanoseconds>(end - start).count();
+    duration *= 1e-9;
+    cout << "running time: " << fixed << duration << setprecision(9) << endl;
+
 
     S.clear();
 
     //Random dataset of increasing size
     std::srand(std::time(nullptr));
-
+/*
 	for(int i = 1; i < 5; i++){
 
 	    for(int j = 0; j < pow(10, i); j++){
@@ -116,7 +158,7 @@ int main() {
 
 	    S.clear();
 	}
-
+*/
 
     return 0;
 }
