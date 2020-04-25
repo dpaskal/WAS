@@ -44,7 +44,7 @@ int lastNonConflict(vector<activity> S, int lo, int hi, int target) {
 // to find latest job that does not conflict 
 int slowLastNonConflict(vector<activity> S, int i) {
     for(int j = i-1; j >= 0; j--) {
-        if(S.at(j).finish_time <= S.at(i).finish_time) {
+        if(S.at(j).finish_time <= S.at(i).start_time) {
             return j;
         }
     }
@@ -86,8 +86,8 @@ int weightedActivitySelection(vector<activity> S) {
 
     for(int i=1; i < size; i++) {
         int currentWeight = S.at(i).weight;
-        // int l = slowLastNonConflict(S, i);
-        int l = lastNonConflict(S, 0, i, S.at(i).start_time);
+        int l = slowLastNonConflict(S, i);
+        // int l = lastNonConflict(S, 0, i, S.at(i).start_time);
         if(l != -1){
             currentWeight += table[l];
         }
@@ -138,12 +138,13 @@ int main() {
 
     //Random dataset of increasing size
     std::srand(std::time(nullptr));
-/*
-	for(int i = 1; i < 5; i++){
 
-	    for(int j = 0; j < pow(10, i); j++){
-	    	int start_time = std::rand() % 100 + 1;
-	    	int end_time = std::rand() % 100 + start_time;
+	for(int i = 1; i < 300; i++){
+
+	    for(int j = 0; j < i; j++){
+	    	int start_time = (std::rand() % 100) + 1;
+	    	int end_time = (std::rand() % 100 + 1) + start_time;
+	    	assert(end_time > start_time);
 	    	int weight = std::rand() % 100 + 1;
 	    	S.push_back(activity{start_time, end_time, weight});
 
@@ -154,11 +155,11 @@ int main() {
 	   	end = high_resolution_clock::now();
 		duration = duration_cast<nanoseconds>(end - start).count();
     	duration *= 1e-9;
-    	cout << "input size " << (pow(10, i)) << " running time: " << fixed << duration << setprecision(9) << endl;
+    	//cout << "input size " << (i) << " running time: " << fixed << duration << setprecision(9) << endl;
 
 	    S.clear();
 	}
-*/
+
 
     return 0;
 }
