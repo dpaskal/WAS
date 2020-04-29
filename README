@@ -1,0 +1,30 @@
+# CS 375 Group Project
+
+Weighted activity selection problem: implement an algorithm using dynamic programming.
+
+How to compile:
+make
+
+How to run:
+./WAS
+
+Data structures used:
+Vector to store the input
+Int array to store memoization in the functions that use that.
+
+Explanations of each function:
+activity struct holds three ints {start time, finish time, weight}
+
+bool comparator(activity a1, activity a2) is used for sorting activities by their finish time before feeding to algorithm.
+
+int lastNonConflict(vector<activity> s, int lo, int hi, int target) is used to do binary search to find last non conflicting activity.
+
+int slowLastNonConflict(vector<activity> s, int i) is used to do a linear search to find the last non conflicting activity.
+
+int optimalChoiceBrute(vector<activity> * S, int pos) is the helper method for bruteforce.
+
+int bruteForce(vector<activity> S) is used to do a bruteforce search for the optimal solution to weighted activity selection.
+
+int weightedActivitySelection(vector<activity> S) is used to do dynamic programming approach to solving weighted activity selection.
+
+int main() is used to do the timing of all algorithms and generates input by std::rand
